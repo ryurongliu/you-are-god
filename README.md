@@ -6,4 +6,4 @@ Coming soon.
 
 ## Notes
 This game uses [MaxPy](https://github.com/Barnard-PL-Labs/MaxPy) and a Python server to communicate between Processing and MaxMSP.    
-Instructions for local play coming soon. 
+Instructions coming soon for play setup. 
