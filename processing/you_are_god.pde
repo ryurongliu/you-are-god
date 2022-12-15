@@ -117,6 +117,8 @@ public class Star
         myOscMessage.add("/info");
         myOscMessage.add(this.h);
         myOscMessage.add(this.rad);
+        myOscMessage.add(this.x * 100 / width);
+        myOscMessage.add(this.y * 100 / height);
         oscP5.send(myOscMessage, maxBroadcastLocation);
       }
     }
