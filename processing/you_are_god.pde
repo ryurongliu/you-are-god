@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import netP5.*;
 import oscP5.*;
+import processing.serial.*;
+
+//serial stuff
+Serial myPort;
+int portIndex = 3; 
 
 //osc stuff
 OscP5 oscP5;
@@ -344,10 +349,13 @@ String destroy_prev;
 boolean destroy_triggered = false;
 
 void setup() {
-  //fullScreen();
-  size(960, 540);
+  fullScreen();
+  //size(960, 540);
   smooth();
 
+  String portName = Serial.list()[portIndex];
+  myPort = new Serial(this, portName, 9600);
+  myPort.bufferUntil(10);
 
   oscP5 = new OscP5(this, 8000);
   maxBroadcastLocation = new NetAddress("127.0.0.1", 5000);
@@ -468,6 +476,19 @@ boolean overButton(int x, int y, int width, int height) {
     return true;
   } else {
     return false;
+  }
+}
+
+void serialEvent(Serial p){
+  String read = myPort.readStringUntil('\n');
+  if(read != null){
+    int[] vals = int(split(read, "/"));
+    if(vals.length > 1){
+      starRad = int(float(vals[0]) * float((width/25 - width/100)) / 1024. + float(width/100));
+      starH = int(float(vals[1]) * 245. / 1023.);
+      
+      println(width/25, width/100, starRad, starH);
+    }
   }
 }
 
@@ -697,30 +718,30 @@ void place_intro() {
     fill(255);
     text("Click to birth a star.", text_width, text_height);
     fill(255, 255, 255, fade_counter*3/2);
-    text("Hold arrow keys to change its color and size.", text_width, text_height + width/70*3/2);
+    text("Use Your potentiometers to change its color and size.", text_width, text_height + width/70*3/2);
   } else if (text_placed == 2) {
     fill(255);
     text("Click to birth a star.", text_width, text_height);
-    text("Hold arrow keys to change its color and size.", text_width, text_height + width/70*3/2);
+    text("Use Your potentiometers to change its color and size.", text_width, text_height + width/70*3/2);
     fill(255, 255, 255, fade_counter*3/2);
     text("Shift-click to kill a star.", text_width, text_height + width/70*6/2);
   } else if (text_placed == 3) {
     fill(255);
     text("Click to birth a star.", text_width, text_height);
-    text("Hold arrow keys to change its color and size.", text_width, text_height + width/70*3/2);
+    text("Use Your potentiometers to change its color and size.", text_width, text_height + width/70*3/2);
     text("Shift-click to kill a star.", text_width, text_height + width/70*6/2);
     fill(255, 255, 255, fade_counter*3/2);
     text("Press Enter when you're done placing stars.", text_width, text_height + width/70*9/2);
   } else if (text_placed == 4) {
     fill(255);
     text("Click to birth a star.", text_width, text_height);
-    text("Hold arrow keys to change its color and size.", text_width, text_height + width/70*3/2);
+    text("Use Your potentiometers to change its color and size.", text_width, text_height + width/70*3/2);
     text("Shift-click to kill a star.", text_width, text_height + width/70*6/2);
     text("Press Enter when you're done placing stars.", text_width, text_height + width/70*9/2);
   } else if (text_placed == 5) {
     fill(255, 255, 255, fade_counter*3/2);
     text("Click to birth a star.", text_width, text_height);
-    text("Hold arrow keys to change its color and size.", text_width, text_height + width/70*3/2);
+    text("Use Your potentiometers to change its color and size.", text_width, text_height + width/70*3/2);
     text("Shift-click to kill a star.", text_width, text_height + width/70*6/2);
     text("Press Enter when you're done placing stars.", text_width, text_height + width/70*9/2);
   }
